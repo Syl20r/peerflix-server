@@ -4,7 +4,7 @@ var torrentStream = require('torrent-stream');
 var _ = require('lodash');
 var net = require('net');
 
-var BITTORRENT_PORT = 6881;
+var BITTORRENT_PORT = 443;
 var tryPort = new Promise(function (resolve) {
   function findPort(port) {
     var s = net.createServer();
