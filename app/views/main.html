@@ -14,13 +14,24 @@
   <div class="form-group">
     <div class="input-group">
       <span class="input-group-addon">torrent:</span>
-      <input type="text" class="form-control" placeholder="Torrent or magnet link" ng-model="link" ng-keypress="keypress($event)">
+      <input type="text" id="magnetlink" class="form-control" placeholder="Torrent or magnet link" ng-model="link" ng-keypress="keypress($event)" value="test">
     </div>
   </div>
   <a class="btn btn-success" href="" ng-click="download()">
     <span class="fa fa-cloud-download"></span>
     Download
   </a>
+  <div id="search">
+    <div class="input-group" style="padding: 4%;">
+      <span class="input-group-addon">Recherche:</span>
+      <input type="text" id="keywords" class="form-control">
+    </div>
+    <button ng-click="search()" class="form-control">Chercher</button>
+    <button ng-click="charge()" class="form-control">Télécharger</button>
+    <br>
+    <table id="searchresults">
+    </table>
+  </div>
   <p class="text-right">
     <i class="fa fa-upload"></i>
     Drop .torrent files here or

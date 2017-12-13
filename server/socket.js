@@ -1,6 +1,9 @@
 'use strict';
 
 var stats = require('./stats');
+var TorrentSearchApi = require('torrent-search-api');
+var torrentSearch = new TorrentSearchApi();
+torrentSearch.enableProvider('Torrent9');
 
 module.exports = function (server) {
   var io = require('socket.io').listen(server),
@@ -9,6 +12,31 @@ module.exports = function (server) {
     store = require('./store');
 
   io.sockets.on('connection', function (socket) {
+
+    socket.on('search', function (keywords) {
+      //console.log(keywords);
+      torrentSearch.search(keywords, 'Movies', 20)
+        .then(torrents => {
+          socket.emit('torrents', torrents);
+        })
+        .catch(err => {
+          console.log(err);
+          socket.emit('err', err);
+        })
+      });
+      socket.on('magnet', function (torrent) { // Get magnet url
+        console.log(torrent.title);
+        // torrent: taken from a search result
+        torrentSearch.getMagnet(torrent)
+            .then(magnet => {
+                console.log(magnet);
+                socket.emit('magnet', magnet);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+      });
+
     socket.on('pause', function (infoHash) {
       console.log('pausing ' + infoHash);
       var torrent = store.get(infoHash);
